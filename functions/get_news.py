@@ -9,7 +9,7 @@ def make_clickable(link,text):
 
 def get_news(content,prediksi,API_SEARCH_TOKEN,CSE_TOKEN):
  #import library request
-    QUERY = "Video “Inul Daratista berbagi hadiah melalui akun Facebook 𝗜𝗻𝘂𝗹 𝗗𝗮𝗿𝗮𝘁𝗶𝘀𝘁𝗮 𝗦𝘂𝗿𝗽𝗿𝗮𝗶𝘀”"
+    QUERY = content
     results = requests.get(f"https://www.googleapis.com/customsearch/v1?key={API_SEARCH_TOKEN}&cx={CSE_TOKEN}&q={QUERY}").json()['items']
     title = [result['title'] for result in results]
     link = [result['link'] for result in results]
