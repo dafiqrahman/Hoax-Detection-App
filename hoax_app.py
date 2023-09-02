@@ -12,7 +12,7 @@ st.write('Aplikasi ini digunakan untuk mendeteksi berita hoax berdasarkan isi be
 st.header('Input Berita')
 col1, col2 = st.columns(2)
 
-API_TOKEN = st.secrets["API_TOKEN"]
+API_KEY = "st.secrets["API_TOKEN"]
 #input
 with col1:
     konten = st.text_area('Masukkan isi konten yang ingin dideteksi')
@@ -23,7 +23,7 @@ with col2:
     st.write("  ")
     sub_col1, sub_col2,sub_col3 = st.columns(3)
     if deteksi_button:
-        hoax, valid, prediksi = deteksi(konten,API_TOKEN)
+        hoax, valid, prediksi = deteksi(konten,API_KEY)
         sub_col1.metric(label='Hoax', value=hoax)
         sub_col2.metric(label='Valid', value=valid)
         sub_col3.metric(label='Prediksi', value=prediksi)

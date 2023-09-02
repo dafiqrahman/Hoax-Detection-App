@@ -7,7 +7,7 @@ def deteksi(content,API_TOKEN):
 
 
     API_URL = "https://api-inference.huggingface.co/models/dafqi/DistilBERT-Hoax-Detection"
-    headers = {"Authorization": f"Bearer {API_TOKEN}"}
+    headers = {"Authorization": API_TOKEN}
     def query(payload):
         response = requests.post(API_URL, headers=headers, json=payload)
         return response.json()
