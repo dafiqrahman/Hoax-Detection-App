@@ -6,11 +6,15 @@ from functions.get_news import get_news
 #streamlit makes 2 columns
 # st.set_page_config(layout="wide")
 
-st.title('Hoax Detection App')
-st.write('This app is used to detect hoax news based on the title and the content of the news. The model used is a combination of LSTM and CNN. The dataset used is the Fake and Real News Dataset from Kaggle.')
-st.header('Input Content')
-col1, col2 = st.columns(2)
 
+st.title('Hoax Detection App')
+st.write('Aplikasi ini digunakan untuk mendeteksi berita hoax berdasarkan isi berita. Model yang digunakan adalah DistilBERT. Dataset yang digunakan adalah Dataset Berita Palsu dan Nyata dari Kaggle dan Jurnal terkait.')
+st.header('Input Berita')
+col1, col2 = st.columns(2)
+#secret
+API_MODEL_TOKEN = st.secrets["API_MODEL_TOKEN"]
+API_SEARCH_TOKEN = st.secrets["API_SEARCH_TOKEN"]
+CSE_TOKEN = st.secrets["CSE_TOKEN"]
 #input
 with col1:
     konten = st.text_area('Masukkan isi konten yang ingin dideteksi')
@@ -21,7 +25,7 @@ with col2:
     st.write("  ")
     sub_col1, sub_col2,sub_col3 = st.columns(3)
     if deteksi_button:
-        hoax, valid, prediksi = deteksi(konten)
+        hoax, valid, prediksi = deteksi(konten,API_MODEL_TOKEN)
         sub_col1.metric(label='Hoax', value=hoax)
         sub_col2.metric(label='Valid', value=valid)
         sub_col3.metric(label='Prediksi', value=prediksi)
@@ -32,7 +36,7 @@ with col2:
 st.write("---")
 if deteksi_button:
     st.subheader("Berita yang mirip dengan konten yang dimasukkan")
-    df = get_news(konten,prediksi)
+    df = get_news(konten,prediksi,API_SEARCH_TOKEN,CSE_TOKEN)
     st.write(df.to_html(escape=False, index=False), unsafe_allow_html=True)
         
 

@@ -1,26 +1,29 @@
 import pandas as pd
 import numpy as np
-
+import requests
 
 def make_clickable(link,text):
     # target _blank to open new window
     # extract clickable text to display for your link
     return f'<a target="_blank" href="{link}">{text}</a>'
 
-def get_news(content,prediksi):
-    link = ["https://stackoverflow.com/questions/71641666/hyperlink-in-streamlit-dataframe",
-            "https://stackoverflow.com/questions/71731937/how-to-plot-comparison-in-streamlit-dynamically-with-multiselect"]
-    text = ["Hyperlink in Streamlit dataframe",
-            "How to plot comparison in Streamlit dynamically with multiselect?"]
-    if prediksi == 'Hoax':
+def get_news(content,prediksi,API_SEARCH_TOKEN,CSE_TOKEN):
+ #import library request
+    QUERY = content
+    results = requests.get(f"https://www.googleapis.com/customsearch/v1?key={API_SEARCH_TOKEN}&cx={CSE_TOKEN}&q={QUERY}").json()['items']
+    title = [result['title'] for result in results]
+    link = [result['link'] for result in results]
+    
+    if prediksi == 'Hoaks':
         prediksi = 'Kontradiksi'
     else:
         prediksi = 'Selaras'
+    link_news = [make_clickable(l,t) for l,t in zip(link,title)]
+    title = [prediksi for i in range(len(link_news))]
     df = pd.DataFrame(
         {
-            "Link Berita": [make_clickable(link[0],text[0]),
-                    make_clickable(link[1],text[1])],
-            "Isi": [prediksi, prediksi]
+            "Link Berita": link_news,
+            "Isi": title,
         }
     )
     return df
